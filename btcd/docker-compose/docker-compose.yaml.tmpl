@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  bitlog_peer:
+networks:
+  bitlog_peer_network:
+    external: true
+services:
+  bitlog_peer:
+    container_name: ${CONTAINER_NAME:-peer0.net0.testnet}
+    hostname: ${HOSTNAME:-peer0.net0.testnet}
+    image: ${IMAGE:-bitlog/btcd:latest}
+    labels:
+      service: bitlog_peer_service
+    # environment:
+    #   -
+    working_dir: /bitlog/
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "9999"
+        max-size: "1g"
+    command: btcd
+    volumes:
+      - ${BTCD_ROOT_DIR:-.btcd/}:/root/.btcd/
+    ports:
+      - ${PORT_PEER_LOCAL:-18555}:${PORT_PEER:-18555}
+      - ${PORT_RPC_LOCAL:-18556}:${PORT_RPC:-18556}
+    networks:
+      bitlog_peer_network:
+        ipv4_address: ${SUBNET_ADDRESS:-172.16.0.100}

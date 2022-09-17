@@ -1,0 +1,66 @@
+# logging file
+logs/
+*.log
+*.txt
+
+# db and block files
+*.db
+*.dat
+*.block
+
+# tar files
+*.tar.gz
+*.zip
+*.7z
+
+# executable binary file
+bitlog-cli
+bitlog-cli.exe
+
+# env vars
+.env
+
+# yaml config file
+*_debug.yaml
+*_product.yaml
+
+# sercet files: ca, key
+*.key
+*.cert
+*.sercet
+
+# output and data path
+tmpl/
+peers/
+out/
+output/
+data/
+
+# temporary and backuping path
+tmp/
+temp/
+bak/
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+vendor/
+
+# Editor and IDE paraphernalia
+.idea
+*.swp
+*.swo
+*~
+yu
+.vs
+.vscode
