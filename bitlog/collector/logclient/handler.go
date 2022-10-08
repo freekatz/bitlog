@@ -8,6 +8,8 @@ import (
 	"github.com/1uvu/bitlog/pkg/common"
 )
 
+// TODO 将 pool 删掉，替换为调用 http 接口
+
 type LogHandler struct {
 	mux sync.Mutex
 	wg  sync.WaitGroup

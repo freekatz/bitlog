@@ -13,28 +13,7 @@ type (
 		/*
 			client config
 		*/
-		RPC   *RPConfig    `mapstructure:"rpc"`
-		Shell *ShellConfig `mapstructure:"shell"`
-
-		/*
-			output config
-		*/
-		Output *OutputConfig `mapstructure:"output"`
-
-		///*
-		//	mode configs
-		//*/
-		//Mode RunMode `mapstructure:"mode"`
-		//// for block mode
-		//BlockCount int64 `mapstructure:"blockCount"`
-		//// for duration mode
-		//Period   string `mapstructure:"period"`
-		//Duration string `mapstructure:"duration"`
-
-		///*
-		//	type configs
-		//*/
-		//Type NetType `mapstructure:"type"`
+		RPC *RPConfig `mapstructure:"rpc"`
 	}
 	RPConfig struct {
 		Address  string `mapstructure:"address"`
