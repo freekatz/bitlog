@@ -8,12 +8,11 @@ import (
 )
 
 func TestLogServer(t *testing.T) {
-	r := gin.Default()
-	logserver.Register(r)
+	server := logserver.NewLogServer(gin.Default())
 
-	r.GET("/", func(context *gin.Context) {
+	server.GET("/", func(context *gin.Context) {
 		context.String(http.StatusOK, "OK")
 	})
 
-	r.Run(":8080")
+	server.Run(":8080")
 }

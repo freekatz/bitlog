@@ -5,8 +5,8 @@ import (
 	"github.com/1uvu/bitlog/pkg/utils"
 	"log"
 	"os"
-	"path/filepath"
 	"sync"
+	"time"
 )
 
 /*
@@ -27,7 +27,7 @@ type (
 		basePath string
 
 		loggerName string
-		day        string
+		currentDay string
 		filepath   string // filepath = basePath + "/" + loggerName + day + ".log"
 
 		log  log.Logger
@@ -108,8 +108,9 @@ func (l *defaultLogger) printf(format string, msg ...interface{}) {
 }
 
 func (l *defaultLogger) initLogger() {
+	now := time.Now()
 	// 如果当前 day 与 logger day 一样，无需初始化新的 log 文件
-	if l.day == utils.CurrentDay() {
+	if l.currentDay == utils.CurrentDay(now) {
 		return
 	}
 	// 关闭旧的 log 文件，关闭前会写入一个 EOF 日志用来标记当前日志文件的结束
@@ -119,8 +120,8 @@ func (l *defaultLogger) initLogger() {
 		l.logf.Close()
 	}
 
-	l.day = utils.CurrentDay()
-	l.filepath = filepath.Join(l.basePath, l.loggerName+"-"+l.day+".log")
+	l.currentDay = utils.CurrentDay(now)
+	l.filepath = utils.CurrentDayLogFilepath(l.basePath, l.loggerName, now)
 
 	// set log writer
 	f, err := os.OpenFile(l.filepath, os.O_CREATE|os.O_APPEND|os.O_RDWR, os.ModePerm)

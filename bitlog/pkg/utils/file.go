@@ -46,3 +46,8 @@ func IsDirExisted(dirPath string) bool {
 	info, err := os.Stat(dirPath)
 	return (err == nil || os.IsExist(err)) && info.IsDir()
 }
+
+func DirFileCount(dirPath string) int {
+	files, _ := os.ReadDir(dirPath)
+	return len(files)
+}

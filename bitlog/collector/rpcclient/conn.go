@@ -20,7 +20,7 @@ type (
 		// IdleTime time.Duration // conn in idle for a IdleTime
 	}
 	RPCOption struct {
-		Conf     *config.RPConfig
+		Conf     *config.RPCConfig
 		PoolSize int
 		// IdleTime time.Duration
 	}

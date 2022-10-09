@@ -1,8 +1,6 @@
 package config
 
 import (
-	"time"
-
 	"github.com/1uvu/bitlog/pkg/errorx"
 
 	"github.com/spf13/viper"
@@ -10,66 +8,56 @@ import (
 
 type (
 	CollectorConfig struct {
-		/*
-			client config
-		*/
-		RPC *RPConfig `mapstructure:"rpc"`
+		Base      *BaseConfig      `mapstructure:"base"`
+		Node      *NodeConfig      `mapstructure:"node"`
+		LogClient *LogClientConfig `mapstructure:"logclient"`
+		LogServer *LogServerConfig `mapstructure:"logserver"`
 	}
-	RPConfig struct {
+	BaseConfig struct {
+		BasePath string `mapstructure:"basepath"`
+	}
+	NodeConfig struct {
+		RPC        *RPCConfig `mapstructure:"rpc"`
+		LoggerName string     `mapstructure:"loggername"`
+	}
+	RPCConfig struct {
 		Address  string `mapstructure:"address"`
 		Port     int    `mapstructure:"port"`
 		Username string `mapstructure:"username"`
 		Password string `mapstructure:"password"`
 	}
-	ShellConfig struct {
+	LogClientConfig struct {
+		LoggerName string `mapstructure:"loggername"`
 	}
-	OutputConfig struct {
-		Path string `mapstructure:"path"`
+	LogServerConfig struct {
+		Address    string `mapstructure:"address"`
+		LoggerName string `mapstructure:"loggername"`
 	}
-	//RunMode string
-	//NetType string
 )
 
-//const (
-//	Once     RunMode = "once"
-//	Block    RunMode = "block"
-//	Duration RunMode = "duration"
-//	Infinity RunMode = "infinity"
-//)
-//
-//const (
-//	Testnet NetType = "testnet"
-//	Simnet  NetType = "simnet"
-//	Mainnet NetType = "mainnet"
-//	Signet  NetType = "signet"
-//)
-//
-//var (
-//	defaultLogPath    = "./logs"
-//	defaultRunMode    = Infinity
-//	defaultBlockCount = 6
-//	defaultPeriod     = "5m"
-//	defaultDuration   = "1h"
-//)
-
 func (c *CollectorConfig) Complete() {
+	//c.RPC.Complete()
+	//c.Log.Complete()
 }
 
 func (c *CollectorConfig) Validate() bool {
+	//return c.RPC.Validate() && c.Log.Validate()
 	return true
 }
 
-func (c *RPConfig) Complete() {
+func (c *RPCConfig) Complete() {
 }
 
-func (c *RPConfig) Validate() bool {
+func (c *RPCConfig) Validate() bool {
 	return true
 }
 
-func ValidateDuration(duration string) bool {
-	d, err := time.ParseDuration(duration)
-	return err == nil && d > 0
-}
+//func (c *LogConfig) Complete() {
+//}
+//
+//func (c *LogConfig) Validate() bool {
+//	return true
+//}
 
 func NewCollectorConfig(confPath string, configType string) (*CollectorConfig, error) {
 	var viperConfig = viper.New()

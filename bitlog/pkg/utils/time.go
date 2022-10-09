@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"path/filepath"
 	"time"
 )
 
@@ -22,6 +23,14 @@ func TimeStrLocal(t time.Time) string {
 	return localTime.String()
 }
 
-func CurrentDay() string {
-	return time.Now().Format(TIME_LAYOUT_DAY)
+func CurrentDay(now time.Time) string {
+	return now.Format(TIME_LAYOUT_DAY)
+}
+
+func CurrentDayLogFilename(now time.Time) string {
+	return CurrentDay(now) + ".log"
+}
+
+func CurrentDayLogFilepath(basePath, loggerName string, now time.Time) string {
+	return filepath.Join(basePath, loggerName, CurrentDayLogFilename(now))
 }

@@ -9,15 +9,23 @@ import (
 )
 
 type (
-	ReportLogRequest struct {
-		Data  [][]byte `json:"data"`
+	LogServer struct {
+		*gin.Engine
+	}
+	LogReportRequest struct {
+		Data  [][]byte `json:"data"` // 打包传输的 log 数组
 		Start int64    `json:"start"`
 		End   int64    `json:"end"`
+		// TODO 支持处理压缩的 log
 	}
 )
 
-func Register(r *gin.Engine) {
-	r.POST("/", reportLogHandleFunc)
+func NewLogServer(r *gin.Engine) *LogServer {
+	server := &LogServer{
+		Engine: r,
+	}
+	server.POST("/", reportLogHandleFunc)
+	return server
 }
 
 func reportLogHandleFunc(c *gin.Context) {

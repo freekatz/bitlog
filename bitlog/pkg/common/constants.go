@@ -1,7 +1,7 @@
 package common
 
 var (
-	Constants map[ConstantKey]string
+	constants map[ConstantKey]string
 )
 
 type ConstantKey int
@@ -14,9 +14,9 @@ const (
 )
 
 func initConstants(consts map[ConstantKey]string) {
-	Constants = consts
+	constants = consts
 }
 
 func GetConstants(key ConstantKey) string {
-	return Constants[key]
+	return constants[key]
 }
