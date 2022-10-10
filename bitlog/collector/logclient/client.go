@@ -31,6 +31,10 @@ type (
 	}
 )
 
+const (
+	RETRY_COUNT = 3
+)
+
 // NewLogClient TODO 支持动态获取 serverAddr
 //
 //	当前直接从配置中读取
@@ -67,7 +71,9 @@ func (c *LogClient) runAndWait() {
 		select {
 		case <-c.stopCh:
 			// 关闭前上报一次
-			c.reportLog()
+			if c.start < c.end {
+				c.reportLog()
+			}
 			// 清理 watcher
 			for _, w := range c.WatchList() {
 				c.Remove(w)
@@ -85,12 +91,12 @@ func (c *LogClient) timeWindow() {
 		select {
 		case <-ticker.C:
 			// 如果队列是空的, 则跳过
-			if c.logQueue.Len() == 0 {
-				return
+			if c.logQueue.Len() != 0 {
+				// 如果不空则打包上报
+				go c.reportLog()
 			}
-			// 如果不空则打包上报
-			c.reportLog()
 		case <-c.stopCh:
+			ticker.Stop()
 			return
 		}
 	}
@@ -109,7 +115,6 @@ func (c *LogClient) watchLog() {
 		case <-c.stopCh:
 			return
 		case err := <-c.Errors:
-			// TODO log 输出错误
 			if err != nil {
 				log.Printf("[watchLog]%v", err)
 			}
@@ -117,6 +122,9 @@ func (c *LogClient) watchLog() {
 	}
 }
 
+// gotWriteEvent TODO fix
+// - 日志写入快, 读日志由于阻塞导致事件处理不及时, 使得读到的最后一行日志是重复的（全是最新的那一行）
+// - 由于 http 调用延时导致事件处理不及时, 使得读到的最后一行日志是重复的（全是最新的那一行）: 开协程来处理
 func (c *LogClient) gotWriteEvent(event fsnotify.Event) {
 	// 读日志
 	var data []byte
@@ -137,7 +145,7 @@ func (c *LogClient) gotWriteEvent(event fsnotify.Event) {
 		c.Unlock()
 		// 如果入队返回已满, 则 reportLog
 		if exceeded {
-			c.reportLog()
+			go c.reportLog()
 		}
 	} else {
 		// 如果读到的是 eof 跳过入队, 并 refreshWatchFile
@@ -148,7 +156,8 @@ func (c *LogClient) gotWriteEvent(event fsnotify.Event) {
 	}
 }
 
-// reportLog 不返回错误, 调用服务仅做简单的重试
+// reportLog 调用 http 接口, 不返回错误, 调用服务仅做简单的重试
+// 开协程来调用此方法, 此方法不会死循环, 不存在泄露风险
 func (c *LogClient) reportLog() {
 	data := c.logQueue.Pack()
 	reportReq := logserver.LogReportRequest{
@@ -158,18 +167,27 @@ func (c *LogClient) reportLog() {
 	}
 	reqAsBytes, err := json.Marshal(reportReq)
 	if err != nil {
-		// TODO 日志输出错误
 		log.Printf("[reportLog]json err:%v", err)
 	}
-	resp, err := http.Post(c.serverAddr, "", bytes.NewReader(reqAsBytes))
+
+	// Test
+	log.Printf("report log req:%+v", reportReq)
+
+	var resp *http.Response
+	for i := 0; i < RETRY_COUNT; i++ {
+		resp, err = http.Post(c.serverAddr, "", bytes.NewReader(reqAsBytes))
+		if err == nil && resp.StatusCode == http.StatusOK {
+			break
+		}
+	}
 	if err != nil || resp.StatusCode != http.StatusOK {
-		// TODO 日志输出错误
 		log.Printf("[reportLog]post resp:%v,err:%v", resp, err)
 	}
 
 	// 更新 start
 	c.Lock()
-	c.start = c.end
+	c.start = c.end + 1
+	c.end = c.end + 1
 	c.Unlock()
 }
 
@@ -192,7 +210,6 @@ func (c *LogClient) refreshWatchFile() error {
 		logfilePath = c.WatchList()[0]
 		err := c.Remove(logfilePath)
 		if err != nil {
-			// TODO log err and continue, not return
 			log.Printf("[refreshWatchFile]%v", err)
 		}
 	}

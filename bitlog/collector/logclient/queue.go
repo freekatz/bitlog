@@ -22,7 +22,7 @@ func NewLogQueue() *LogQueue {
 func (q *LogQueue) Len() int {
 	q.Lock()
 	defer q.Unlock()
-	// 通过 head, tail 计算得到
+	// 通过 tail 计算得到
 	return q.tail
 }
 

@@ -1,6 +1,7 @@
 package logserver
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io"
@@ -30,14 +31,26 @@ func NewLogServer(r *gin.Engine) *LogServer {
 
 func reportLogHandleFunc(c *gin.Context) {
 	body := c.Request.Body
-	data, err := io.ReadAll(body)
+	dataAsBytes, err := io.ReadAll(body)
 	if err != nil {
 		// TODO 先 panic
-		panic(fmt.Sprintf("[reportLogHandleFunc]%v", err))
+		panic(fmt.Sprintf("[reportLogHandleFunc]read body err:%v", err))
 	}
+
+	var reportReq LogReportRequest
+	err = json.Unmarshal(dataAsBytes, &reportReq)
+	if err != nil {
+		// TODO 先 panic
+		panic(fmt.Sprintf("[reportLogHandleFunc]json err:%v", err))
+	}
+
 	// TODO
 	// 	- 1. 解决乱序问题
 	// 	- 2. 传给 loop 插件
 	c.String(http.StatusOK, "OK")
-	log.Println(string(data))
+
+	log.Println(reportReq.Start, reportReq.End)
+	for _, data := range reportReq.Data {
+		log.Printf("%s\n", string(data))
+	}
 }
