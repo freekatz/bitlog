@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-func ReadLastLine(filePath string) (string, error) {
+func ReadLastLine(filePath string) ([]byte, error) {
 	fileHandle, err := os.Open(filePath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer fileHandle.Close()
 
@@ -34,7 +34,7 @@ func ReadLastLine(filePath string) (string, error) {
 			break
 		}
 	}
-	return line, nil
+	return []byte(line), nil
 }
 
 func IsFileExisted(filePath string) bool {
