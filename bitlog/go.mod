@@ -2,7 +2,7 @@ module github.com/1uvu/bitlog
 
 go 1.18
 
-replace github.com/1uvu/bitlog => ../
+replace github.com/1uvu/bitlog => ./
 
 require (
 	github.com/btcsuite/btcd v0.23.1

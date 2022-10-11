@@ -84,7 +84,6 @@ func (p *RPCPool) selectConn() (*RPCConn, error) {
 		conn, ok = p.rookie[key]
 	}
 
-	// TODO
 	if !ok {
 		log.Println(key)
 		panic("conn is nil")

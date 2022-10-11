@@ -10,6 +10,7 @@ import (
 )
 
 // todo mod, move collector schedule into cmd backend
+// TODO 解决 panic 和各种临时 log 输出
 
 type CollectorClientMgr struct {
 	// ctx  context.Context // TODO
