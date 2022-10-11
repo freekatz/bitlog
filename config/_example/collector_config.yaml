@@ -1,0 +1,18 @@
+---
+version: 3.0
+
+base:
+  basepath:
+node:
+  rpc:
+    address: peer0.net0.mainnet
+    port: 8334
+    username: admin
+    password: admin
+  loggername:
+logclient:
+  loggername:
+logserver:
+  address: # logserver address
+  loggername:
+
