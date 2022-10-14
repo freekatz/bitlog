@@ -12,8 +12,12 @@ services:
     image: ${IMAGE:-bitlog/btcd:latest}
     labels:
       service: bitlog_peer_service
-    # environment:
-    #   -
+    environment:
+      - BITLOG_ROOT_DIR:/root/${BITLOG_ROOT_DIR:-.bitlog/}
+      - BITLOG_CLIENT_DIR:/root/${BITLOG_CLIENT_DIR:-.bitlog/btcd/}
+      - BITLOG_LOG_DIR:/root/${BITLOG_LOG_DIR:-.bitlog/logfiles/}
+      - BITLOG_CONFIG_DIR:/root/${BITLOG_CONFIG_DIR:-.bitlog/configs/}
+      - BITLOG_COLLECTOR_CONFIG_NAME:/root/${BITLOG_COLLECTOR_CONFIG_NAME:-.bitlog/configs/collector_config.yaml}
     working_dir: /bitlog/
     restart: unless-stopped
     logging:

@@ -1,10 +1,12 @@
 [Application Options]
+
 ## network option
 # mainnet=1
 # testnet=1
 # signet=1
 # simnet=1
 testnet=1
+
 ## port option
 ## for testnet 18555 18556
 ## for mainnet 8333 8334
@@ -12,14 +14,17 @@ testnet=1
 ## for signet 38333 38334
 listen=:18555
 rpclisten=:18556
+
 ## password
 rpcpass=admin
 rpcuser=admin
+
 ## others useful option
 notls=true
 addrindex=false
 txindex=false
 debuglevel=info
+
 ## connect option
 ## if the speed of block sync is too slow, go to
 ## https://bitnodes.io/nodes/, and use the ip to replace follows

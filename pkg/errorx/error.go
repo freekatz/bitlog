@@ -19,6 +19,8 @@ var (
 		ErrorX internal errors
 	*/
 	ErrConfigInvalid         = errors.New("config invalid")
+	ErrEnvKeyInvalid         = errors.New("env key invalid")
+	ErrEnvLookupFailed       = errors.New("env lookup failed")
 	ErrRemoteLogDirInvalid   = errors.New("remote log dir path invalid")
 	ErrSSHExecFailed         = errors.New("ssh exec failed")
 	ErrStatusInfoIncomplete  = errors.New("types info collect incomplete")
