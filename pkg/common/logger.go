@@ -5,6 +5,7 @@ import (
 	"github.com/1uvu/bitlog/pkg/utils"
 	"log"
 	"os"
+	"path/filepath"
 	"sync"
 	"time"
 )
@@ -118,6 +119,18 @@ func (l *defaultLogger) initLogger() {
 		// EOF
 		l.log.Printf(LOG_EOF)
 		l.logf.Close()
+	}
+
+	p, err := filepath.Abs(filepath.Join(l.basePath, l.loggerName))
+	if err != nil {
+		panic(fmt.Sprintf("[initLogger]%v", err))
+	}
+	_, err = os.Stat(p)
+	if os.IsNotExist(err) {
+		err := os.MkdirAll(p, os.ModePerm)
+		if err != nil {
+			panic(fmt.Sprintf("[initLogger]%v", err))
+		}
 	}
 
 	l.currentDay = utils.CurrentDay(now)
