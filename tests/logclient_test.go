@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"github.com/1uvu/bitlog/collector/logclient"
 	"github.com/1uvu/bitlog/pkg/config"
+	"github.com/1uvu/bitlog/service"
 	"testing"
 	"time"
 )
@@ -17,7 +17,7 @@ func TestLogClient(t *testing.T) {
 		}
 		stopCh = make(chan struct{})
 	)
-	c, err := logclient.NewLogClient(conf, stopCh)
+	c, err := service.NewLogClient(conf, stopCh)
 	if err != nil {
 		t.Error(err)
 	}

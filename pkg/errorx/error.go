@@ -21,12 +21,8 @@ var (
 	ErrConfigInvalid         = errors.New("config invalid")
 	ErrEnvKeyInvalid         = errors.New("env key invalid")
 	ErrEnvLookupFailed       = errors.New("env lookup failed")
-	ErrRemoteLogDirInvalid   = errors.New("remote log dir path invalid")
-	ErrSSHExecFailed         = errors.New("ssh exec failed")
-	ErrStatusInfoIncomplete  = errors.New("types info collect incomplete")
-	ErrFlagsInfoIncomplete   = errors.New("flags info collect incomplete")
-	ErrMetricsInfoIncomplete = errors.New("metrics info collect incomplete")
-	ErrPackageLogsIncomplete = errors.New("package logs incomplete")
+	ErrLogTreeRootIncomplete = errors.New("log tree root incomplete")
+	ErrLogTreeNotFoundChild  = errors.New("log tree not found child")
 
 	/*
 		ErrorX file errors

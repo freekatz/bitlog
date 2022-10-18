@@ -9,8 +9,6 @@ type (
 	}
 	CodecBase64 struct {
 	}
-	CodecBase64WithGzip struct {
-	}
 )
 
 func (codec *CodecBase64) Encode(src []byte) string {

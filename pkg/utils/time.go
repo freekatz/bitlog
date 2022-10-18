@@ -31,6 +31,7 @@ func CurrentDayLogFilename(now time.Time) string {
 	return CurrentDay(now) + ".log"
 }
 
+// CurrentDayLogFilepath basePath/loggerName/day.log
 func CurrentDayLogFilepath(basePath, loggerName string, now time.Time) string {
 	return filepath.Join(basePath, loggerName, CurrentDayLogFilename(now))
 }
