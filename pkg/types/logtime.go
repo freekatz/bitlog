@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// TODO 精简，目前看来还用不上 timeline 的
+
 type (
 	Timestamp int64
 	TimePoint struct {

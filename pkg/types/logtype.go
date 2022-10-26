@@ -1,5 +1,9 @@
 package types
 
+// TODO 完善，确定当前阶段需要的 type，边改 btcd 边确定
+// TODO 根据 type 确定 status 的属性，以及其他 log 的详细内容
+// TODO 完善，后面每个 type 可能都对应一种结构体从 raw 解析得到
+
 type RawLogType string
 
 func (t RawLogType) String() string {
@@ -11,20 +15,14 @@ const (
 	ChangeTypeTx    = RawLogType("change_tx")
 	ChangeTypeBlock = RawLogType("change_block")
 
-	ChangeTypeChain                 = RawLogType("change_chain")
-	ChangeTypeChain_Main_Create     = RawLogType("change_chain_main_create")
-	ChangeTypeChain_Main_Remove     = RawLogType("change_chain_main_remove")
-	ChangeTypeChain_Main_Extend     = RawLogType("change_chain_main_extend")
-	ChangeTypeChain_Main_Reduce     = RawLogType("change_chain_main_reduce")
-	ChangeTypeChain_Main_Fork       = RawLogType("change_chain_main_fork")
-	ChangeTypeChain_Main_Reorganize = RawLogType("change_chain_main_reorganize")
-
-	ChangeTypeChain_Side_Create     = RawLogType("change_chain_side_create")
-	ChangeTypeChain_Side_Remove     = RawLogType("change_chain_side_remove")
-	ChangeTypeChain_Side_Extend     = RawLogType("change_chain_side_extend")
-	ChangeTypeChain_Side_Reduce     = RawLogType("change_chain_side_reduce")
-	ChangeTypeChain_Side_Fork       = RawLogType("change_chain_side_fork")
-	ChangeTypeChain_Side_Reorganize = RawLogType("change_chain_side_reorganize")
+	// ChangeTypeChain 目前只关注 change chain，每一种 change 对应独立的日志文件
+	ChangeTypeChain            = RawLogType("change_chain")
+	ChangeTypeChain_Create     = RawLogType("change_chain_create")
+	ChangeTypeChain_Remove     = RawLogType("change_chain_remove")
+	ChangeTypeChain_Extend     = RawLogType("change_chain_extend")
+	ChangeTypeChain_Reduce     = RawLogType("change_chain_reduce")
+	ChangeTypeChain_Fork       = RawLogType("change_chain_fork")
+	ChangeTypeChain_Reorganize = RawLogType("change_chain_reorganize")
 
 	ChangeTypeNetwork = RawLogType("change_network")
 
@@ -33,6 +31,10 @@ const (
 
 // StatusType
 const (
+	StatueTypeTx = RawLogType("status_tx")
+
+	StatueTypeBlock = RawLogType("status_block")
+
 	StatueTypeChain = RawLogType("status_chain")
 
 	StatueTypeNetwork = RawLogType("status_network")
@@ -40,7 +42,13 @@ const (
 	StatusTypeUnknown = RawLogType("status_unknown")
 )
 
-// EventType for ChangeTypeBlock
+// EventType for StatusTypeTx
+const (
+	// EventTypeTx tx
+	EventTypeTx = RawLogType("event_tx")
+)
+
+// EventType for StatusTypeBlock
 const (
 	// EventTypeBlock_Arrival arrival
 	EventTypeBlock_Arrival = RawLogType("event_block_arrival")
@@ -64,19 +72,25 @@ const (
 	EventTypeBlock_Disconnect = RawLogType("event_block_disconnect")
 )
 
-// EventType for ChangeTypeChain
+// EventType for StatusTypeChain
 const (
 	// EventTypeChain chain
 	EventTypeChain = RawLogType("event_chain")
 )
 
-// EventType for ChangeTypeNetwork
+// EventType for StatusTypeNetwork
 const (
 	EventTypeNetwork = RawLogType("event_network")
 	EventTypeUnknown = RawLogType("event_unknown")
 )
 
-// ResultType for ChangeTypeBlock
+// ResultType for EventTypeTx
+const (
+	// ResultTypeTx tx
+	ResultTypeTx = RawLogType("result_tx")
+)
+
+// ResultType for EventTypeBlock
 const (
 	// ResultTypeBlock_Verify verify
 
@@ -111,13 +125,13 @@ const (
 	ResultTypeBlock_Disconnect_BecomeStale = RawLogType("result_block_disconnect_become_stale") // become stale when disconnect from mainchain or sidechain
 )
 
-// ResultType for ChangeTypeChain
+// ResultType for EventTypeChain
 const (
 	// ResultTypeChain chain
 	ResultTypeChain = RawLogType("result_chain")
 )
 
-// ResultType for ChangeTypeNetwork
+// ResultType for EventTypeNetwork
 const (
 	ResultTypeNetwork = RawLogType("result_network")
 	ResultTypeUnknown = RawLogType("result_unknown")

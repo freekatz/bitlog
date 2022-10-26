@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"github.com/1uvu/bitlog/pkg/common"
 )
 
@@ -17,11 +16,6 @@ type RawLog struct {
 	Type      RawLogType `json:"type"`
 	Timestamp Timestamp  `json:"timestamp"`
 	Raw       []byte     `json:"raw"`
-}
-
-func (raw *RawLog) Marshal() ([]byte, error) {
-	data, err := json.Marshal(*raw)
-	return data, err
 }
 
 // TODO replace interface with object and add more UnmarshalXXX methods
