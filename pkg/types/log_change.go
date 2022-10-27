@@ -4,7 +4,7 @@ import "github.com/1uvu/bitlog/pkg/common"
 
 type ChangeLog struct {
 	// change detail
-	Change RawLog
+	ChangeRaw RawLog
 
 	// resolver
 	ID                 common.ID
